@@ -1,0 +1,33 @@
+1. Create a bucket
+gcloud storage buckets create gs://abalabanovic-gcp-practical --location=us-central1
+
+2.Create pub/sub topic
+gcloud pubsub topics create abalabanovic
+
+3.Install dependenecies
+- mkdir my-cloud-function && cp index.js my-cloud-function
+- npm init -y
+- npm install @google-cloud/storage
+
+4.Deploy function 
+gcloud functions deploy processMessage \
+  --runtime=nodejs20 \
+  --trigger-topic=[TOPIC_NAME] \
+  --set-env-vars=BUCKET_NAME=[BUCKET_NAME] \
+  --region=[REGION] \
+  --entry-point=processMessage
+
+  package.json ->
+  {
+  "name": "process-message",
+  "version": "1.0.0",
+  "main": "index.js",
+  "dependencies": {
+    "@google-cloud/storage": "^6.9.0"
+  }
+}
+
+5. Publish the message to pub/sub "Hello World"
+
+6.We see that the function is triggered and message-13225567143866738.txt has been created
+in abalabanovic bucket
